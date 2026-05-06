@@ -11,6 +11,8 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 
+import { Select, ConfigProvider } from 'antd';
+
 interface ChartData {
   name: string;
   income: number;
@@ -19,17 +21,40 @@ interface ChartData {
 
 interface FinancialChartProps {
   data: ChartData[];
+  currentRange: 'recent' | 'month';
+  onRangeChange: (range: 'recent' | 'month') => void;
 }
 
-const FinancialChart: React.FC<FinancialChartProps> = ({ data }) => {
+const FinancialChart: React.FC<FinancialChartProps> = ({ data, currentRange, onRangeChange }) => {
   return (
     <div className="bento-card h-[400px] flex flex-col">
       <div className="flex items-center justify-between mb-6">
-        <div>
-          <h3 className="text-lg font-bold">Xu hướng Tài chính</h3>
-          <p className="text-sm text-muted-foreground">Phân tích thu chi hàng tháng</p>
+        <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+          <div>
+            <h3 className="text-lg font-bold">Xu hướng Tài chính</h3>
+            <p className="text-sm text-muted-foreground">Phân tích thu chi</p>
+          </div>
+          
+          <ConfigProvider
+            theme={{
+              token: {
+                colorPrimary: '#6366f1',
+                borderRadius: 12,
+              },
+            }}
+          >
+            <Select
+              value={currentRange}
+              onChange={onRangeChange}
+              className="w-40"
+              options={[
+                { value: 'recent', label: 'Các tháng gần đây' },
+                { value: 'month', label: 'Tháng này' },
+              ]}
+            />
+          </ConfigProvider>
         </div>
-        <div className="flex items-center gap-4 text-xs font-medium">
+        <div className="hidden lg:flex items-center gap-4 text-xs font-medium">
           <div className="flex items-center gap-1.5">
             <div className="w-3 h-3 rounded-full bg-aura-indigo" />
             <span>Thu nhập</span>

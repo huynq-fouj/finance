@@ -14,7 +14,8 @@ import {
   Menu,
   X
 } from 'lucide-react';
-import { signOut } from '@/app/auth/actions';
+import { signOut, getUser, updateAvatarUrl } from '@/app/auth/actions';
+import { toast } from 'react-hot-toast';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Bảng điều khiển', href: '/' },
@@ -27,6 +28,15 @@ const menuItems = [
 const Sidebar = () => {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      const user = await getUser();
+      setUserData(user);
+    };
+    fetchUser();
+  }, []);
 
   // Close sidebar on navigation on mobile
   useEffect(() => {
@@ -40,7 +50,7 @@ const Sidebar = () => {
   return (
     <>
       {/* Mobile Topbar */}
-      <div className="md:hidden flex items-center justify-between p-4 border-b border-border bg-white z-40 sticky top-0 shadow-sm shadow-black/[0.02]">
+      <div className="md:hidden flex items-center justify-between p-4 border-b border-border bg-white z-40 sticky top-0 shadow-sm shadow-black/2">
         <Link href="/" className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-lg overflow-hidden relative shadow-sm">
             <Image src="/logo.png" alt="Aura Logo" fill className="object-cover" />
@@ -105,20 +115,25 @@ const Sidebar = () => {
         </nav>
         
         <div className="p-4 mt-auto">
-          <div className="p-4 bg-muted/50 rounded-2xl border border-border">
+          <div className="p-4 bg-slate-50/50 rounded-2xl border border-border shadow-sm">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-full bg-slate-200 animate-pulse overflow-hidden relative">
-                {/* Optional avatar */}
-                <User className="w-full h-full p-2 text-slate-400" />
+              <div className="w-10 h-10 rounded-full bg-slate-100 overflow-hidden shrink-0 border-2 border-white shadow-sm relative">
+                {userData?.avatar_url ? (
+                  <Image src={userData.avatar_url} alt="Avatar" fill className="object-cover" />
+                ) : (
+                  <User className="w-full h-full p-2 text-slate-400" />
+                )}
               </div>
               <div className="overflow-hidden">
-                <p className="text-xs font-bold truncate">Admin User</p>
-                <p className="text-[10px] text-muted-foreground">Pro Member</p>
+                <p className="text-xs font-bold truncate text-slate-900">
+                  {userData?.full_name || userData?.email?.split('@')[0] || 'Đang tải...'}
+                </p>
+                <p className="text-[10px] text-muted-foreground font-medium uppercase tracking-wider">Thành viên</p>
               </div>
             </div>
             <form action={signOut}>
-              <button className="w-full flex items-center justify-center gap-2 text-xs font-bold text-red-500 hover:bg-red-50 py-2 rounded-lg transition-colors">
-                <LogOut className="w-3 h-3" />
+              <button className="w-full flex items-center justify-center gap-2 text-xs font-bold text-red-500 hover:bg-red-50 py-2 rounded-xl transition-all duration-200">
+                <LogOut className="w-3.5 h-3.5" />
                 Đăng xuất
               </button>
             </form>

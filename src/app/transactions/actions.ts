@@ -43,7 +43,7 @@ export async function getTransactions({
     .from('transactions')
     .select('*')
     .eq('user_id', payload.userId)
-    .order('transaction_date', { ascending: false })
+    .order('created_at', { ascending: false })
 
   // Apply filters
   if (type) {

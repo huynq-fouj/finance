@@ -205,3 +205,24 @@ export async function changePassword(formData: FormData) {
   revalidatePath('/account/security')
   redirect(`/account/security?success=${encodeURIComponent('Đổi mật khẩu thành công')}`)
 }
+
+export async function updateAvatarUrl(avatarUrl: string) {
+  const cookieStore = await cookies()
+  const token = cookieStore.get('auth_token')?.value
+
+  if (!token) return { error: 'Không tìm thấy phiên đăng nhập' }
+
+  const payload = await verifyToken(token)
+  if (!payload || !payload.userId) return { error: 'Phiên đăng nhập không hợp lệ' }
+
+  const supabase = getAdminClient()
+  const { error } = await supabase
+    .from('users')
+    .update({ avatar_url: avatarUrl, updated_at: new Date().toISOString() })
+    .eq('id', payload.userId)
+
+  if (error) return { error: error.message }
+
+  revalidatePath('/', 'layout')
+  return { success: true }
+}

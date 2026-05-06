@@ -235,10 +235,11 @@ export default function TransactionListClient({
       {/* Transaction List Table */}
       <div className="bento-card p-0 overflow-hidden border-none shadow-xl shadow-slate-200/50">
         <div className="hidden sm:grid grid-cols-12 gap-4 px-8 py-4 bg-slate-50/50 border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em]">
-          <div className="col-span-4">Thông tin giao dịch</div>
+          <div className="col-span-3">Giao dịch</div>
           <div className="col-span-2">Danh mục</div>
           <div className="col-span-2">Ngày thực hiện</div>
-          <div className="col-span-3 text-right">Số tiền</div>
+          <div className="col-span-2">Ghi chú</div>
+          <div className="col-span-2 text-right">Số tiền</div>
           <div className="col-span-1"></div>
         </div>
 
@@ -261,15 +262,12 @@ export default function TransactionListClient({
                   className="grid grid-cols-12 gap-4 items-center px-8 py-5 hover:bg-slate-50/50 transition-all duration-200 group"
                 >
                   {/* Title + Icon */}
-                  <div className="col-span-12 sm:col-span-4 flex items-center gap-4">
+                  <div className="col-span-12 sm:col-span-3 flex items-center gap-4">
                     <div className={`w-11 h-11 rounded-2xl ${colorClass} flex items-center justify-center shrink-0 shadow-sm`}>
                       <Icon className="w-5 h-5" />
                     </div>
                     <div className="min-w-0">
                       <p className="text-sm font-bold text-slate-900 truncate">{tx.title}</p>
-                      {tx.description && (
-                        <p className="text-xs text-slate-400 truncate mt-0.5">{tx.description}</p>
-                      )}
                     </div>
                   </div>
 
@@ -287,9 +285,16 @@ export default function TransactionListClient({
                     </p>
                   </div>
 
+                  {/* Description Column (Position 4) */}
+                  <div className="hidden sm:block col-span-2">
+                    <p className="text-sm text-slate-400 truncate pr-4" title={tx.description || ''}>
+                      {tx.description || '—'}
+                    </p>
+                  </div>
+
                   {/* Amount */}
-                  <div className="col-span-8 sm:col-span-3 text-right">
-                    <p className={`text-base font-black tracking-tight ${tx.type === 'income' ? 'text-green-600' : 'text-red-400'}`}>
+                  <div className="col-span-8 sm:col-span-2 text-right">
+                    <p className={`text-base font-bold tracking-tight ${tx.type === 'income' ? 'text-green-600' : 'text-red-400'}`}>
                       {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
                     </p>
                   </div>

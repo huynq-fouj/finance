@@ -17,7 +17,7 @@ export interface CategoryItem {
 }
 
 export const CATEGORIES: CategoryItem[] = [
-  { value: 'salary',        label: 'Lương',               icon: ArrowUpRight,   className: 'bg-indigo-100 text-indigo-700' },
+  { value: 'salary',        label: 'Lương/Thưởng',               icon: ArrowUpRight,   className: 'bg-indigo-100 text-indigo-700' },
   { value: 'food',          label: 'Ăn uống',             icon: Coffee,         className: 'bg-emerald-100 text-emerald-700' },
   { value: 'shopping',      label: 'Mua sắm',             icon: ShoppingBag,    className: 'bg-amber-100 text-amber-700' },
   { value: 'transport',     label: 'Di chuyển',            icon: Car,            className: 'bg-violet-100 text-violet-700' },

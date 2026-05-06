@@ -1,23 +1,30 @@
 import { getDashboardData } from '@/app/dashboard/actions';
 import StatCard from '@/components/stat-card';
-import FinancialChart from '@/components/financial-chart';
 import AIAdvisor from '@/components/ai-advisor';
 import TransactionTable from '@/components/transaction-table';
 import AddTransactionModal from '@/components/add-transaction-modal';
 import DashboardSearch from '@/components/dashboard-search';
+import DashboardChartSection from '@/components/dashboard-chart-section';
 import dayjs from 'dayjs';
 import { 
   Wallet, 
   ArrowUpRight, 
   ArrowDownLeft, 
   TrendingUp,
-  Search,
   Bell,
   Calendar
 } from 'lucide-react';
 
-export default async function Home() {
-  const data = await getDashboardData();
+interface PageProps {
+  searchParams: Promise<{
+    range?: string;
+  }>;
+}
+
+export default async function Home({ searchParams }: PageProps) {
+  const params = await searchParams;
+  const range = (params.range as 'recent' | 'month') || 'recent';
+  const data = await getDashboardData(range);
 
   if (!data) {
     return <div className="p-8 text-center">Đang tải dữ liệu hoặc lỗi xác thực...</div>;
@@ -105,7 +112,7 @@ export default async function Home() {
 
         {/* Main Content Bento Area */}
         <div className="lg:col-span-3 lg:row-span-2">
-          <FinancialChart data={chartData} />
+          <DashboardChartSection data={chartData} />
         </div>
         
         <div className="lg:col-span-1">
