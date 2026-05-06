@@ -11,17 +11,17 @@ import {
   ResponsiveContainer 
 } from 'recharts';
 
-const data = [
-  { name: 'Th 1', income: 4000, expenses: 2400 },
-  { name: 'Th 2', income: 3000, expenses: 1398 },
-  { name: 'Th 3', income: 2000, expenses: 9800 },
-  { name: 'Th 4', income: 2780, expenses: 3908 },
-  { name: 'Th 5', income: 1890, expenses: 4800 },
-  { name: 'Th 6', income: 2390, expenses: 3800 },
-  { name: 'Th 7', income: 3490, expenses: 4300 },
-];
+interface ChartData {
+  name: string;
+  income: number;
+  expenses: number;
+}
 
-const FinancialChart = () => {
+interface FinancialChartProps {
+  data: ChartData[];
+}
+
+const FinancialChart: React.FC<FinancialChartProps> = ({ data }) => {
   return (
     <div className="bento-card h-[400px] flex flex-col">
       <div className="flex items-center justify-between mb-6">
@@ -62,17 +62,21 @@ const FinancialChart = () => {
               axisLine={false} 
               tickLine={false} 
               tick={{ fill: '#94a3b8', fontSize: 12 }} 
-              tickFormatter={(value) => `$${value}`}
+              tickFormatter={(value) => `${(value / 1000000).toFixed(1)}tr`}
             />
             <Tooltip 
+              formatter={(value: any) => new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value)}
               contentStyle={{ 
                 backgroundColor: '#fff', 
                 border: 'none', 
-                borderRadius: '12px', 
-                boxShadow: '0 10px 15px -3px rgb(0 0 0 / 0.1)' 
+                borderRadius: '16px', 
+                boxShadow: '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)',
+                padding: '12px'
               }} 
+              itemStyle={{ fontWeight: 600, fontSize: '12px' }}
             />
             <Area 
+              name="Thu nhập"
               type="monotone" 
               dataKey="income" 
               stroke="#6366f1" 
@@ -81,6 +85,7 @@ const FinancialChart = () => {
               fill="url(#colorIncome)" 
             />
             <Area 
+              name="Chi tiêu"
               type="monotone" 
               dataKey="expenses" 
               stroke="#e2e8f0" 

@@ -3,34 +3,34 @@ import { Sparkles, ArrowRight, Zap } from 'lucide-react';
 
 const AIAdvisor = () => {
   return (
-    <div className="bento-card bg-primary text-primary-foreground border-none shadow-xl shadow-primary/20 relative overflow-hidden group">
+    <div className="bento-card bg-slate-900 border-none shadow-2xl shadow-indigo-500/20 relative overflow-hidden group">
       <div className="relative z-10">
-        <div className="flex items-center gap-2 mb-4">
-          <div className="p-1.5 bg-white/20 rounded-lg backdrop-blur-sm">
-            <Sparkles className="w-4 h-4 text-white" />
+        <div className="flex items-center gap-2 mb-6">
+          <div className="p-2 bg-indigo-500/20 rounded-lg backdrop-blur-md border border-indigo-400/20">
+            <Sparkles className="w-4 h-4 text-indigo-400" />
           </div>
-          <span className="text-xs font-bold uppercase tracking-widest text-white/70">Aura AI Advisor</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-400/80">Aura AI Advisor</span>
         </div>
         
-        <h3 className="text-xl font-bold mb-3 leading-tight">
-          Bạn có thể tiết kiệm thêm <span className="text-aura-indigo-light bg-white text-primary px-1.5 rounded">2.5tr</span> trong tháng tới.
+        <h3 className="text-2xl font-bold mb-4 leading-tight text-gray-700 tracking-tight">
+          Bạn có thể tiết kiệm thêm <span className="text-indigo-400">2.5tr</span> trong tháng tới.
         </h3>
         
-        <p className="text-sm text-primary-foreground/70 mb-6 leading-relaxed">
+        <p className="text-sm text-slate-400 mb-8 leading-relaxed font-medium">
           Dựa trên phân tích chi tiêu ăn uống, chúng tôi khuyên bạn nên điều chỉnh thói quen vào cuối tuần.
         </p>
         
-        <button className="flex items-center gap-2 text-sm font-bold bg-white text-primary px-4 py-2 rounded-xl hover:bg-slate-50 transition-all group/btn">
+        <button className="flex items-center gap-2 text-xs font-bold bg-white text-slate-900 px-5 py-2.5 rounded-xl hover:bg-indigo-50 transition-all group/btn shadow-lg shadow-white/10">
           Xem chi tiết
           <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
         </button>
       </div>
       
-      {/* Abstract decorative elements */}
-      <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-aura-indigo to-aura-violet opacity-30 blur-3xl -translate-y-1/2 translate-x-1/2"></div>
-      <div className="absolute bottom-0 left-0 w-24 h-24 bg-white/5 blur-2xl rounded-full translate-y-1/2 -translate-x-1/2"></div>
+      {/* Premium decorative elements */}
+      <div className="absolute -top-24 -right-24 w-64 h-64 bg-indigo-600/20 blur-[100px] rounded-full"></div>
+      <div className="absolute -bottom-24 -left-24 w-48 h-48 bg-violet-600/10 blur-[80px] rounded-full"></div>
       
-      <Zap className="absolute top-4 right-4 w-12 h-12 text-white/5 rotate-12 group-hover:rotate-0 transition-transform duration-700" />
+      <Zap className="absolute top-6 right-6 w-16 h-16 text-white/[0.03] rotate-12 group-hover:rotate-0 transition-all duration-1000 ease-out" />
     </div>
   );
 };

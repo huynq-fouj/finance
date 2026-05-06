@@ -1,22 +1,29 @@
-import React from 'react';
-import { 
-  Wallet, 
-  ArrowUpRight, 
-  ArrowDownLeft, 
-  TrendingUp,
-  Plus,
-  Search,
-  Bell,
-  Calendar,
-  Filter
-} from 'lucide-react';
+import { getDashboardData } from '@/app/dashboard/actions';
 import StatCard from '@/components/stat-card';
 import FinancialChart from '@/components/financial-chart';
 import AIAdvisor from '@/components/ai-advisor';
 import TransactionTable from '@/components/transaction-table';
 import AddTransactionModal from '@/components/add-transaction-modal';
+import dayjs from 'dayjs';
+import { 
+  Wallet, 
+  ArrowUpRight, 
+  ArrowDownLeft, 
+  TrendingUp,
+  Search,
+  Bell,
+  Calendar
+} from 'lucide-react';
 
-export default function Home() {
+export default async function Home() {
+  const data = await getDashboardData();
+
+  if (!data) {
+    return <div className="p-8 text-center">Đang tải dữ liệu hoặc lỗi xác thực...</div>;
+  }
+
+  const { user, stats, recentTransactions, chartData } = data;
+
   return (
     <div className="max-w-[1600px] mx-auto p-4 md:p-8 animate-in fade-in duration-1000">
       {/* Premium Header */}
@@ -26,14 +33,16 @@ export default function Home() {
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Live Dashboard</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">Chào buổi sáng, <span className="text-aura-indigo">Admin</span></h1>
-          <p className="text-muted-foreground text-sm mt-1">Dưới đây là tóm lược tình hình tài chính của bạn trong 24h qua.</p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+            Chào buổi sáng, <span className="text-aura-indigo">{user.fullName || 'Admin'}</span>
+          </h1>
+          <p className="text-muted-foreground text-sm mt-1">Dưới đây là tóm lược tình hình tài chính của bạn.</p>
         </div>
         
         <div className="flex items-center gap-2 sm:gap-3 w-full md:w-auto mt-4 md:mt-0">
           <div className="hidden lg:flex items-center gap-2 bg-white border border-border px-3 py-2 rounded-xl text-sm font-medium text-muted-foreground shrink-0">
             <Calendar className="w-4 h-4" />
-            <span>24 Th 05, 2026</span>
+            <span>{dayjs().format('DD [Th] MM, YYYY')}</span>
           </div>
           
           <div className="relative group flex-1 md:flex-none">
@@ -60,36 +69,31 @@ export default function Home() {
         {/* KPI Row */}
         <StatCard 
           title="Tổng số dư" 
-          value="45,250k" 
-          change="12%" 
-          trend="up" 
+          value={stats.balance} 
           icon={Wallet} 
         />
         <StatCard 
           title="Thu nhập" 
-          value="18,000k" 
-          change="5%" 
+          value={stats.totalIncome} 
           trend="up" 
           icon={ArrowUpRight} 
         />
         <StatCard 
           title="Chi tiêu" 
-          value="7,420k" 
-          change="8%" 
+          value={stats.totalExpense} 
           trend="down" 
           icon={ArrowDownLeft} 
         />
         <StatCard 
-          title="Tiết kiệm" 
-          value="10,580k" 
-          change="24%" 
+          title="Tỷ lệ tiết kiệm" 
+          value={`${stats.savings}%`} 
           trend="up" 
           icon={TrendingUp} 
         />
 
         {/* Main Content Bento Area */}
         <div className="lg:col-span-3 lg:row-span-2">
-          <FinancialChart />
+          <FinancialChart data={chartData} />
         </div>
         
         <div className="lg:col-span-1">
@@ -100,18 +104,20 @@ export default function Home() {
         <div className="bento-card lg:col-span-1 bg-gradient-to-br from-indigo-50 to-white">
           <h3 className="text-sm font-bold mb-4 uppercase tracking-wider text-indigo-900/60">Mục tiêu tiết kiệm</h3>
           <div className="flex justify-between items-end mb-2">
-            <span className="text-2xl font-bold text-indigo-900">75%</span>
-            <span className="text-xs font-bold text-indigo-900/40">Mua MacBook Pro</span>
+            <span className="text-2xl font-bold text-indigo-900">{stats.savings}%</span>
+            <span className="text-xs font-bold text-indigo-900/40">Mục tiêu chung</span>
           </div>
           <div className="w-full h-2 bg-indigo-100 rounded-full overflow-hidden">
-            <div className="h-full bg-aura-indigo rounded-full" style={{ width: '75%' }}></div>
+            <div className="h-full bg-aura-indigo rounded-full" style={{ width: `${stats.savings}%` }}></div>
           </div>
-          <p className="text-[10px] text-indigo-900/50 mt-4 font-medium italic">"Chỉ còn 5.000k nữa thôi, cố lên!"</p>
+          <p className="text-[10px] text-indigo-900/50 mt-4 font-medium italic">
+            {stats.savings > 20 ? '"Bạn đang làm rất tốt, hãy duy trì nhé!"' : '"Cố gắng cắt giảm chi tiêu không cần thiết nào!"'}
+          </p>
         </div>
 
         {/* Full width Transaction Table */}
         <div className="lg:col-span-4 mt-2">
-          <TransactionTable />
+          <TransactionTable transactions={recentTransactions} />
         </div>
 
       </div>

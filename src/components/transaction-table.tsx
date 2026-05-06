@@ -9,50 +9,51 @@ import {
   MoreHorizontal
 } from 'lucide-react';
 
-const transactions = [
-  {
-    id: 1,
-    name: 'Apple Store',
-    category: 'Công nghệ',
-    amount: '-1.250.000đ',
-    date: '24 Th 05, 2026',
-    status: 'completed',
-    icon: ShoppingBag,
-    color: 'bg-slate-100 text-slate-700'
-  },
-  {
-    id: 2,
-    name: 'Starbucks Coffee',
-    category: 'Ăn uống',
-    amount: '-85.000đ',
-    date: '24 Th 05, 2026',
-    status: 'completed',
-    icon: Coffee,
-    color: 'bg-emerald-100 text-emerald-700'
-  },
-  {
-    id: 3,
-    name: 'Lương tháng 5',
-    category: 'Thu nhập',
-    amount: '+18.000.000đ',
-    date: '23 Th 05, 2026',
-    status: 'completed',
-    icon: ArrowUpRight,
-    color: 'bg-indigo-100 text-indigo-700'
-  },
-  {
-    id: 4,
-    name: 'Tiền thuê nhà',
-    category: 'Nhà ở',
-    amount: '-5.000.000đ',
-    date: '21 Th 05, 2026',
-    status: 'pending',
-    icon: Home,
-    color: 'bg-amber-100 text-amber-700'
-  }
-];
+import dayjs from 'dayjs';
+import 'dayjs/locale/vi';
 
-const TransactionTable = () => {
+dayjs.locale('vi');
+
+interface Transaction {
+  id: string | number;
+  title: string;
+  category: string;
+  amount: number;
+  transaction_date: string;
+  type: 'income' | 'expense';
+}
+
+interface TransactionTableProps {
+  transactions: Transaction[];
+}
+
+const TransactionTable: React.FC<TransactionTableProps> = ({ transactions }) => {
+  const getCategoryIcon = (category: string) => {
+    switch (category?.toLowerCase()) {
+      case 'food': return Coffee;
+      case 'shopping': return ShoppingBag;
+      case 'utilities': return Home;
+      case 'transport': return Car;
+      case 'salary': return ArrowUpRight;
+      default: return MoreHorizontal;
+    }
+  };
+
+  const getCategoryColor = (category: string) => {
+    switch (category?.toLowerCase()) {
+      case 'food': return 'bg-emerald-100 text-emerald-700';
+      case 'shopping': return 'bg-amber-100 text-amber-700';
+      case 'utilities': return 'bg-blue-100 text-blue-700';
+      case 'salary': return 'bg-indigo-100 text-indigo-700';
+      default: return 'bg-slate-100 text-slate-700';
+    }
+  };
+
+  const formatCurrency = (amount: number, type: 'income' | 'expense') => {
+    const formatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
+    return type === 'income' ? `+${formatted}` : `-${formatted}`;
+  };
+
   return (
     <div className="bento-card">
       <div className="flex items-center justify-between mb-6">
@@ -61,25 +62,35 @@ const TransactionTable = () => {
       </div>
       
       <div className="space-y-4">
-        {transactions.map((tx) => (
-          <div key={tx.id} className="flex items-center justify-between group cursor-pointer p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors duration-200">
-            <div className="flex items-center gap-4">
-              <div className={`p-2.5 rounded-xl ${tx.color} group-hover:scale-110 transition-transform duration-300`}>
-                <tx.icon className="w-5 h-5" />
+        {transactions.length === 0 ? (
+          <div className="text-center py-8 text-muted-foreground text-sm">Chưa có giao dịch nào</div>
+        ) : (
+          transactions.map((tx) => {
+            const Icon = getCategoryIcon(tx.category);
+            const colorClass = getCategoryColor(tx.category);
+            return (
+              <div key={tx.id} className="flex items-center justify-between group cursor-pointer p-2 -mx-2 rounded-xl hover:bg-slate-50 transition-colors duration-200">
+                <div className="flex items-center gap-4">
+                  <div className={`p-2.5 rounded-xl ${colorClass} group-hover:scale-110 transition-transform duration-300`}>
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-foreground">{tx.title}</p>
+                    <p className="text-xs text-muted-foreground uppercase text-[10px] tracking-wider">{tx.category}</p>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <p className={`text-sm font-bold ${tx.type === 'income' ? 'text-green-600' : 'text-foreground'}`}>
+                    {formatCurrency(tx.amount, tx.type)}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-tight font-medium">
+                    {dayjs(tx.transaction_date).format('DD [Th] MM, YYYY')}
+                  </p>
+                </div>
               </div>
-              <div>
-                <p className="text-sm font-bold text-foreground">{tx.name}</p>
-                <p className="text-xs text-muted-foreground">{tx.category}</p>
-              </div>
-            </div>
-            <div className="text-right">
-              <p className={`text-sm font-bold ${tx.amount.startsWith('+') ? 'text-green-600' : 'text-foreground'}`}>
-                {tx.amount}
-              </p>
-              <p className="text-[10px] text-muted-foreground uppercase tracking-tight font-medium">{tx.date}</p>
-            </div>
-          </div>
-        ))}
+            );
+          })
+        )}
       </div>
     </div>
   );
