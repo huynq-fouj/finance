@@ -14,6 +14,7 @@ import StatCard from '@/components/stat-card';
 import FinancialChart from '@/components/financial-chart';
 import AIAdvisor from '@/components/ai-advisor';
 import TransactionTable from '@/components/transaction-table';
+import AddTransactionModal from '@/components/add-transaction-modal';
 
 export default function Home() {
   return (
@@ -49,10 +50,7 @@ export default function Home() {
             <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
           </button>
           
-          <button className="bg-primary text-white h-11 px-3 sm:px-5 rounded-xl text-sm font-bold hover:bg-primary/90 transition-all shadow-xl shadow-primary/10 flex items-center justify-center gap-2 active:scale-95 shrink-0">
-            <Plus className="w-4 h-4" />
-            <span className="hidden sm:inline">Thêm mới</span>
-          </button>
+          <AddTransactionModal />
         </div>
       </header>
 
