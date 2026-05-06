@@ -62,15 +62,7 @@ const antdTheme = {
   },
 };
 
-const categoryOptions = [
-  { value: 'salary', label: 'Lương' },
-  { value: 'food', label: 'Ăn uống' },
-  { value: 'shopping', label: 'Mua sắm' },
-  { value: 'transport', label: 'Di chuyển' },
-  { value: 'utilities', label: 'Hóa đơn & Tiện ích' },
-  { value: 'entertainment', label: 'Giải trí' },
-  { value: 'other', label: 'Khác' },
-];
+import { categorySelectOptions } from '@/constants/categories';
 
 const labelClass = "font-bold text-slate-500 uppercase tracking-widest text-[10px]";
 
@@ -106,7 +98,7 @@ function TransactionFormFields() {
             className="w-full"
             styles={{ popup: { root: { borderRadius: '8px' } } }}
             classNames={{ popup: { root: 'shadow-2xl' } }}
-            options={categoryOptions}
+            options={categorySelectOptions}
           />
         </Form.Item>
       </div>

@@ -1,16 +1,8 @@
 import React from 'react';
-import { 
-  ArrowUpRight, 
-  ArrowDownLeft, 
-  ShoppingBag, 
-  Coffee, 
-  Home, 
-  Car,
-  MoreHorizontal
-} from 'lucide-react';
-
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
+import { getCategoryIcon, getCategoryColor } from '@/constants/categories';
+import Link from 'next/link';
 
 dayjs.locale('vi');
 
@@ -28,26 +20,6 @@ interface TransactionTableProps {
 }
 
 const TransactionTable: React.FC<TransactionTableProps> = ({ transactions }) => {
-  const getCategoryIcon = (category: string) => {
-    switch (category?.toLowerCase()) {
-      case 'food': return Coffee;
-      case 'shopping': return ShoppingBag;
-      case 'utilities': return Home;
-      case 'transport': return Car;
-      case 'salary': return ArrowUpRight;
-      default: return MoreHorizontal;
-    }
-  };
-
-  const getCategoryColor = (category: string) => {
-    switch (category?.toLowerCase()) {
-      case 'food': return 'bg-emerald-100 text-emerald-700';
-      case 'shopping': return 'bg-amber-100 text-amber-700';
-      case 'utilities': return 'bg-blue-100 text-blue-700';
-      case 'salary': return 'bg-indigo-100 text-indigo-700';
-      default: return 'bg-slate-100 text-slate-700';
-    }
-  };
 
   const formatCurrency = (amount: number, type: 'income' | 'expense') => {
     const formatted = new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
@@ -58,7 +30,7 @@ const TransactionTable: React.FC<TransactionTableProps> = ({ transactions }) => 
     <div className="bento-card">
       <div className="flex items-center justify-between mb-6">
         <h3 className="text-lg font-bold">Giao dịch gần đây</h3>
-        <button className="text-xs font-bold text-aura-indigo hover:underline">Xem tất cả</button>
+        <Link href={'/transactions'} className="text-xs font-bold text-aura-indigo hover:underline">Xem tất cả</Link>
       </div>
       
       <div className="space-y-4">

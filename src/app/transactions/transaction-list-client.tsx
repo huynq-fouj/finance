@@ -8,18 +8,13 @@ import {
   ChevronRight,
   Trash2,
   Pencil,
-  ArrowUpRight,
-  Coffee,
-  ShoppingBag,
-  Home,
-  Car,
-  MoreHorizontal,
 } from 'lucide-react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import { deleteTransaction } from './actions';
 import { toast } from 'react-hot-toast';
 import { EditTransactionModal, TransactionData } from '@/components/add-transaction-modal';
+import { getCategoryIcon, getCategoryColor } from '@/constants/categories';
 
 dayjs.locale('vi');
 
@@ -41,29 +36,6 @@ interface Props {
   currentType?: 'income' | 'expense';
   currentSearch: string;
 }
-
-const getCategoryIcon = (category: string) => {
-  switch (category?.toLowerCase()) {
-    case 'food': return Coffee;
-    case 'shopping': return ShoppingBag;
-    case 'utilities': return Home;
-    case 'transport': return Car;
-    case 'salary': return ArrowUpRight;
-    default: return MoreHorizontal;
-  }
-};
-
-const getCategoryColor = (category: string) => {
-  switch (category?.toLowerCase()) {
-    case 'food': return 'bg-emerald-100 text-emerald-700';
-    case 'shopping': return 'bg-amber-100 text-amber-700';
-    case 'utilities': return 'bg-blue-100 text-blue-700';
-    case 'transport': return 'bg-violet-100 text-violet-700';
-    case 'salary': return 'bg-indigo-100 text-indigo-700';
-    default: return 'bg-slate-100 text-slate-700';
-  }
-};
-
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
 };
@@ -223,7 +195,7 @@ export default function TransactionListClient({
                   </div>
 
                   <div className="col-span-8 sm:col-span-2 text-right">
-                    <p className={`text-sm font-bold ${tx.type === 'income' ? 'text-green-600' : 'text-foreground'}`}>
+                    <p className={`text-sm font-bold ${tx.type === 'income' ? 'text-green-600' : 'text-red-400'}`}>
                       {tx.type === 'income' ? '+' : '-'}{formatCurrency(tx.amount)}
                     </p>
                   </div>

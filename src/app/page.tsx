@@ -101,7 +101,7 @@ export default async function Home() {
         </div>
         
         {/* Goals or Quick Action Bento Card */}
-        <div className="bento-card lg:col-span-1 bg-gradient-to-br from-indigo-50 to-white">
+        <div className="bento-card lg:col-span-1 bg-linear-to-br from-indigo-50 to-white">
           <h3 className="text-sm font-bold mb-4 uppercase tracking-wider text-indigo-900/60">Mục tiêu tiết kiệm</h3>
           <div className="flex justify-between items-end mb-2">
             <span className="text-2xl font-bold text-indigo-900">{stats.savings}%</span>
