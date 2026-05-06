@@ -4,6 +4,7 @@ import FinancialChart from '@/components/financial-chart';
 import AIAdvisor from '@/components/ai-advisor';
 import TransactionTable from '@/components/transaction-table';
 import AddTransactionModal from '@/components/add-transaction-modal';
+import DashboardSearch from '@/components/dashboard-search';
 import dayjs from 'dayjs';
 import { 
   Wallet, 
@@ -24,6 +25,24 @@ export default async function Home() {
 
   const { user, stats, recentTransactions, chartData } = data;
 
+  const getGreeting = () => {
+    const hour = dayjs().hour();
+    const greetings = {
+      morning: ['Chào buổi sáng', 'Ngày mới tốt lành', 'Khởi đầu ngày mới rực rỡ', 'Sáng an lành'],
+      afternoon: ['Chào buổi chiều', 'Chúc bạn buổi chiều năng suất', 'Năng lượng cho buổi chiều'],
+      evening: ['Chào buổi tối', 'Chúc bạn tối ấm áp', 'Tận hưởng buổi tối yên bình', 'Buổi tối tuyệt vời'],
+    };
+
+    let period: keyof typeof greetings = 'morning';
+    if (hour >= 12 && hour < 18) period = 'afternoon';
+    else if (hour >= 18 || hour < 5) period = 'evening';
+
+    const choices = greetings[period];
+    return choices[Math.floor(Math.random() * choices.length)];
+  };
+
+  const greeting = getGreeting();
+
   return (
     <div className="max-w-none mx-auto p-4 md:p-8 animate-in fade-in duration-1000">
       {/* Premium Header */}
@@ -34,7 +53,7 @@ export default async function Home() {
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Live Dashboard</span>
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-foreground">
-            Chào buổi sáng, <span className="text-aura-indigo">{user.fullName || 'Admin'}</span>
+            {greeting}, <span className="text-aura-indigo">{user.fullName || 'Admin'}</span>
           </h1>
           <p className="text-muted-foreground text-sm mt-1">Dưới đây là tóm lược tình hình tài chính của bạn.</p>
         </div>
@@ -45,14 +64,7 @@ export default async function Home() {
             <span>{dayjs().format('DD [Th] MM, YYYY')}</span>
           </div>
           
-          <div className="relative group flex-1 md:flex-none">
-            <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-aura-indigo transition-colors" />
-            <input 
-              type="text" 
-              placeholder="Lệnh nhanh (Cmd+K)" 
-              className="pl-10 pr-4 py-2.5 bg-white border border-border rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-aura-indigo/5 focus:border-aura-indigo transition-all w-full md:w-64"
-            />
-          </div>
+          <DashboardSearch />
           
           <button className="p-2.5 bg-white border border-border rounded-xl text-muted-foreground hover:text-foreground hover:border-aura-indigo transition-all relative shrink-0">
             <Bell className="w-5 h-5" />

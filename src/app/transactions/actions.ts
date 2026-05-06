@@ -51,6 +51,21 @@ export async function getTransactions({
     dataQuery = dataQuery.eq('type', type)
   }
 
+  if (category) {
+    countQuery = countQuery.eq('category', category)
+    dataQuery = dataQuery.eq('category', category)
+  }
+
+  if (startDate) {
+    countQuery = countQuery.gte('transaction_date', startDate)
+    dataQuery = dataQuery.gte('transaction_date', startDate)
+  }
+
+  if (endDate) {
+    countQuery = countQuery.lte('transaction_date', endDate)
+    dataQuery = dataQuery.lte('transaction_date', endDate)
+  }
+
   if (search) {
     const searchFilter = `title.ilike.%${search}%,category.ilike.%${search}%`
     countQuery = countQuery.or(searchFilter)

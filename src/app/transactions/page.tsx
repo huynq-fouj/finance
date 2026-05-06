@@ -1,5 +1,4 @@
 import { getTransactions } from './actions';
-import AddTransactionModal from '@/components/add-transaction-modal';
 import TransactionListClient from './transaction-list-client';
 
 interface PageProps {
@@ -7,6 +6,9 @@ interface PageProps {
     page?: string;
     type?: string;
     search?: string;
+    category?: string;
+    startDate?: string;
+    endDate?: string;
   }>;
 }
 
@@ -15,9 +17,20 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
   const page = Number(params.page) || 1;
   const type = params.type as 'income' | 'expense' | undefined;
   const search = params.search || '';
+  const category = params.category || '';
+  const startDate = params.startDate || '';
+  const endDate = params.endDate || '';
   const pageSize = 10;
 
-  const { data, total } = await getTransactions({ page, pageSize, type, search });
+  const { data, total } = await getTransactions({ 
+    page, 
+    pageSize, 
+    type, 
+    search,
+    category,
+    startDate,
+    endDate
+  });
   const totalPages = Math.ceil(total / pageSize);
 
   return (
@@ -29,6 +42,9 @@ export default async function TransactionsPage({ searchParams }: PageProps) {
         currentPage={page}
         currentType={type}
         currentSearch={search}
+        currentCategory={category}
+        currentStartDate={startDate}
+        currentEndDate={endDate}
       />
     </div>
   );

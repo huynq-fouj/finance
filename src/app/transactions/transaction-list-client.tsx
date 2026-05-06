@@ -13,8 +13,9 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/vi';
 import { deleteTransaction } from './actions';
 import { toast } from 'react-hot-toast';
+import { DatePicker, Select, ConfigProvider } from 'antd';
 import { EditTransactionModal, TransactionData, default as AddTransactionModal } from '@/components/add-transaction-modal';
-import { getCategoryIcon, getCategoryColor } from '@/constants/categories';
+import { getCategoryIcon, getCategoryColor, categorySelectOptions } from '@/constants/categories';
 
 dayjs.locale('vi');
 
@@ -35,7 +36,13 @@ interface Props {
   currentPage: number;
   currentType?: 'income' | 'expense';
   currentSearch: string;
+  currentCategory?: string;
+  currentStartDate?: string;
+  currentEndDate?: string;
 }
+
+const { RangePicker } = DatePicker;
+
 const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
 };
@@ -47,6 +54,9 @@ export default function TransactionListClient({
   currentPage,
   currentType,
   currentSearch,
+  currentCategory,
+  currentStartDate,
+  currentEndDate,
 }: Props) {
   const router = useRouter();
   const pathname = usePathname();
@@ -56,10 +66,16 @@ export default function TransactionListClient({
 
   const updateParams = (updates: Record<string, string | undefined>) => {
     const params = new URLSearchParams();
+    
+    // Set current values first
     if (currentType) params.set('type', currentType);
     if (currentSearch) params.set('search', currentSearch);
+    if (currentCategory) params.set('category', currentCategory);
+    if (currentStartDate) params.set('startDate', currentStartDate);
+    if (currentEndDate) params.set('endDate', currentEndDate);
     params.set('page', String(currentPage));
 
+    // Apply updates
     for (const [key, value] of Object.entries(updates)) {
       if (value === undefined || value === '') {
         params.delete(key);
@@ -68,7 +84,9 @@ export default function TransactionListClient({
       }
     }
 
-    if ('type' in updates || 'search' in updates) {
+    // Reset page to 1 if any filter (besides page itself) changes
+    const filterKeys = ['type', 'search', 'category', 'startDate', 'endDate'];
+    if (Object.keys(updates).some(key => filterKeys.includes(key))) {
       params.set('page', '1');
     }
 
@@ -113,48 +131,105 @@ export default function TransactionListClient({
       />
 
       {/* Modern Horizontal Header (Dashboard Style) */}
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-8">
-        <div className="shrink-0">
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">Giao dịch</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Quản lý thu chi · <span className="font-semibold text-foreground">{total}</span> bản ghi
-          </p>
-        </div>
+      <div className="flex flex-col gap-6 mb-8">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+          <div className="shrink-0">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">Giao dịch</h1>
+            <p className="text-sm text-muted-foreground mt-1">
+              Quản lý thu chi · <span className="font-semibold text-foreground">{total}</span> bản ghi
+            </p>
+          </div>
 
-        <div className="flex-1 flex flex-col md:flex-row items-center gap-3 max-w-4xl">
-          {/* Search Bar */}
-          <form onSubmit={handleSearch} className="relative w-full">
-            <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Tìm kiếm giao dịch..."
-              className="w-full pl-11 pr-4 py-2.5 bg-white border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-aura-indigo/5 focus:border-aura-indigo transition-all shadow-sm"
-            />
-          </form>
+          <div className="flex-1 flex flex-col md:flex-row items-center gap-3 max-w-4xl">
+            {/* Search Bar */}
+            <form onSubmit={handleSearch} className="relative w-full">
+              <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Tìm kiếm giao dịch..."
+                className="w-full pl-11 pr-4 py-2.5 bg-white border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-aura-indigo/5 focus:border-aura-indigo transition-all shadow-sm"
+              />
+            </form>
 
-          {/* Type Filters */}
-          <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-2xl shrink-0">
-            {typeFilters.map((filter) => (
-              <button
-                key={filter.label}
-                onClick={() => updateParams({ type: filter.value })}
-                className={`px-4 py-2 text-xs font-bold rounded-xl transition-all duration-200 ${
-                  currentType === filter.value
-                    ? 'bg-white text-foreground shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {filter.label}
-              </button>
-            ))}
+            <AddTransactionModal />
           </div>
         </div>
 
-        <div className="shrink-0">
-          <AddTransactionModal />
-        </div>
+        {/* Filters Row */}
+        <ConfigProvider
+          theme={{
+            token: {
+              colorPrimary: '#6366f1',
+              borderRadius: 12,
+              fontFamily: 'inherit',
+            },
+            components: {
+              Select: { controlHeight: 42 },
+              DatePicker: { controlHeight: 42 },
+            }
+          }}
+        >
+          <div className="flex flex-wrap items-center gap-4 p-4 bg-white/50 border border-slate-100 rounded-3xl shadow-sm backdrop-blur-sm">
+            {/* Type Toggle */}
+            <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl">
+              {typeFilters.map((filter) => (
+                <button
+                  key={filter.label}
+                  onClick={() => updateParams({ type: filter.value })}
+                  className={`px-4 py-1.5 text-xs font-bold rounded-lg transition-all duration-200 ${
+                    currentType === filter.value
+                      ? 'bg-white text-foreground shadow-sm'
+                      : 'text-muted-foreground hover:text-foreground'
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+
+            <div className="h-6 w-px bg-slate-200 mx-2 hidden md:block" />
+
+            {/* Category Filter */}
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Danh mục:</span>
+              <Select
+                placeholder="Tất cả danh mục"
+                className="w-48"
+                value={currentCategory || ''}
+                onChange={(val) => updateParams({ category: val || undefined })}
+                options={[
+                  { value: '', label: 'Tất cả danh mục' },
+                  ...categorySelectOptions
+                ]}
+              />
+            </div>
+
+            <div className="h-6 w-px bg-slate-200 mx-2 hidden md:block" />
+
+            {/* Date Range Filter */}
+            <div className="flex items-center gap-2">
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Khoảng thời gian:</span>
+              <RangePicker
+                className="w-64"
+                placeholder={['Từ ngày', 'Đến ngày']}
+                format="DD/MM/YYYY"
+                value={currentStartDate && currentEndDate ? [dayjs(currentStartDate), dayjs(currentEndDate)] : undefined}
+                onChange={(dates) => {
+                  if (dates) {
+                    updateParams({
+                      startDate: dates[0]?.toISOString(),
+                      endDate: dates[1]?.toISOString(),
+                    });
+                  } else {
+                    updateParams({ startDate: undefined, endDate: undefined });
+                  }
+                }}
+              />
+            </div>
+          </div>
+        </ConfigProvider>
       </div>
 
       {/* Transaction List Table */}
