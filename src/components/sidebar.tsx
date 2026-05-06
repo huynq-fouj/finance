@@ -55,7 +55,7 @@ const Sidebar = () => {
           <div className="w-8 h-8 rounded-lg overflow-hidden relative shadow-sm">
             <Image src="/logo.png" alt="Aura Logo" fill className="object-cover" />
           </div>
-          <span className="font-bold text-lg tracking-tight">Aura</span>
+          <span className="font-bold text-base tracking-tight">Aura</span>
         </Link>
         <button 
           onClick={() => setIsOpen(true)}
@@ -84,7 +84,7 @@ const Sidebar = () => {
             <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-primary/20 relative">
               <Image src="/logo.png" alt="Aura Logo" fill className="object-cover" />
             </div>
-            <span className="font-bold text-xl tracking-tight">Aura</span>
+            <span className="font-bold text-lg tracking-tight">Aura</span>
           </Link>
           <button 
             onClick={() => setIsOpen(false)} 
@@ -101,13 +101,13 @@ const Sidebar = () => {
               <Link 
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 group ${
+                className={`flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all duration-200 group ${
                   isActive 
                     ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/10' 
                     : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
                 }`}
               >
-                <item.icon className={`w-5 h-5 ${isActive ? 'text-white' : 'group-hover:scale-110 transition-transform'}`} />
+                <item.icon className={`w-4.5 h-4.5 ${isActive ? 'text-white' : 'group-hover:scale-110 transition-transform'}`} />
                 {item.label}
               </Link>
             );

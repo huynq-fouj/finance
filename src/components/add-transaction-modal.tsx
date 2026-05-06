@@ -23,7 +23,7 @@ function TypeSelector({ value, onChange }: { value?: string, onChange?: (val: st
       <button
         type="button"
         onClick={() => onChange?.('income')}
-        className={`flex-1 py-3 font-bold rounded-xl transition-all duration-200 ${
+        className={`flex-1 py-3 font-bold rounded-[12px] transition-all duration-200 ${
           value === 'income' 
             ? 'bg-white text-green-600 shadow-sm' 
             : 'text-slate-500 hover:text-green-600'
@@ -34,7 +34,7 @@ function TypeSelector({ value, onChange }: { value?: string, onChange?: (val: st
       <button
         type="button"
         onClick={() => onChange?.('expense')}
-        className={`flex-1 py-3 font-bold rounded-xl transition-all duration-200 ${
+        className={`flex-1 py-3 font-bold rounded-[12px] transition-all duration-200 ${
           value === 'expense' 
             ? 'bg-white text-red-600 shadow-sm' 
             : 'text-slate-500 hover:text-red-600'
@@ -53,12 +53,12 @@ const antdTheme = {
     fontFamily: 'inherit',
   },
   components: {
-    Button: { borderRadius: 8, controlHeightLG: 44, fontWeight: 600 },
-    Input: { borderRadius: 8, controlHeightLG: 44 },
-    Select: { borderRadius: 8, controlHeightLG: 44 },
-    InputNumber: { borderRadius: 8, controlHeightLG: 44 },
-    DatePicker: { borderRadius: 8, controlHeightLG: 44 },
-    Modal: { borderRadiusLG: 24, paddingContentHorizontalLG: 32, paddingLG: 32 },
+    Button: { borderRadius: 8, controlHeightLG: 40, fontWeight: 600 },
+    Input: { borderRadius: 8, controlHeightLG: 40 },
+    Select: { borderRadius: 8, controlHeightLG: 40 },
+    InputNumber: { borderRadius: 8, controlHeightLG: 40 },
+    DatePicker: { borderRadius: 8, controlHeightLG: 40 },
+    Modal: { borderRadiusLG: 24, paddingContentHorizontalLG: 24, paddingLG: 24 },
   },
 };
 
@@ -183,14 +183,14 @@ export default function AddTransactionModal() {
     <ConfigProvider theme={antdTheme}>
       <button 
         onClick={() => setIsOpen(true)}
-        className="bg-primary text-white h-11 px-3 sm:px-5 rounded-xl text-sm font-bold hover:bg-primary/90 transition-all shadow-xl shadow-primary/10 flex items-center justify-center gap-2 active:scale-95 shrink-0 border-none outline-none cursor-pointer"
+        className="bg-primary text-white px-3 py-2 rounded-xl text-[12px] font-bold hover:bg-primary/90 transition-all shadow-xl shadow-primary/10 flex items-center justify-center gap-2 active:scale-95 shrink-0 border-none outline-none cursor-pointer"
       >
-        <Plus className="w-4 h-4" />
+        <Plus className="w-5 h-5" />
         <span className="hidden sm:inline">Thêm mới</span>
       </button>
 
       <Modal
-        title={<span className="text-2xl font-bold tracking-tight text-slate-900">Thêm Giao Dịch Mới</span>}
+        title={<span className="text-xl font-bold tracking-tight text-slate-900">Thêm Giao Dịch Mới</span>}
         open={isOpen}
         onCancel={() => !isPending && setIsOpen(false)}
         footer={null}
@@ -210,10 +210,10 @@ export default function AddTransactionModal() {
           <TransactionFormFields />
 
           <div className="flex justify-end gap-3 mt-10">
-            <Button size="large" onClick={() => setIsOpen(false)} disabled={isPending} className="border-none bg-slate-100 text-slate-600 hover:bg-slate-200! transition-all">
+            <Button onClick={() => setIsOpen(false)} disabled={isPending} className="h-10! border-none bg-slate-100 text-slate-600 hover:bg-slate-200! transition-all">
               Hủy
             </Button>
-            <Button type="primary" htmlType="submit" size="large" loading={isPending} className="bg-slate-900 hover:bg-slate-800! shadow-xl shadow-slate-900/10 border-none min-w-[140px]">
+            <Button type="primary" htmlType="submit" loading={isPending} className="h-10! bg-slate-900 hover:bg-slate-800! shadow-xl shadow-slate-900/10 border-none min-w-[140px]">
               Lưu giao dịch
             </Button>
           </div>
@@ -294,10 +294,10 @@ export function EditTransactionModal({
           <TransactionFormFields />
 
           <div className="flex justify-end gap-3 mt-10">
-            <Button size="large" onClick={onClose} disabled={isPending} className="border-none bg-slate-100 text-slate-600 hover:bg-slate-200! transition-all">
+            <Button size="large" onClick={onClose} disabled={isPending} className="h-10! border-none bg-slate-100 text-slate-600 hover:bg-slate-200! transition-all">
               Hủy
             </Button>
-            <Button type="primary" htmlType="submit" size="large" loading={isPending} className="bg-slate-900 hover:bg-slate-800! shadow-xl shadow-slate-900/10 border-none min-w-[140px]">
+            <Button type="primary" htmlType="submit" size="large" loading={isPending} className="h-10! bg-slate-900 hover:bg-slate-800! shadow-xl shadow-slate-900/10 border-none min-w-[140px]">
               Lưu thay đổi
             </Button>
           </div>

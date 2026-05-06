@@ -17,13 +17,13 @@ export default function DashboardSearch() {
 
   return (
     <form onSubmit={handleSearch} className="relative group flex-1 md:flex-none">
-      <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-aura-indigo transition-colors" />
+      <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-aura-indigo transition-colors" />
       <input 
         type="text" 
         value={query}
         onChange={(e) => setQuery(e.target.value)}
         placeholder="Tìm kiếm nhanh (Enter)..." 
-        className="pl-10 pr-4 py-2.5 bg-white border border-border rounded-xl text-sm focus:outline-none focus:ring-4 focus:ring-aura-indigo/5 focus:border-aura-indigo transition-all w-full md:w-64"
+        className="pl-10 pr-4 py-2 bg-white border border-border rounded-xl text-[13px] focus:outline-none focus:ring-4 focus:ring-aura-indigo/5 focus:border-aura-indigo transition-all w-full md:w-64"
       />
     </form>
   );

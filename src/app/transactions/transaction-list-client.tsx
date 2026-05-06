@@ -149,7 +149,7 @@ export default function TransactionListClient({
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Tìm kiếm giao dịch..."
-                className="w-full pl-11 pr-4 py-2.5 bg-white border border-slate-200 rounded-2xl text-sm focus:outline-none focus:ring-4 focus:ring-aura-indigo/5 focus:border-aura-indigo transition-all shadow-sm"
+                className="w-full pl-10 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-[13px] focus:outline-none focus:ring-4 focus:ring-aura-indigo/5 focus:border-aura-indigo transition-all"
               />
             </form>
 
@@ -166,14 +166,14 @@ export default function TransactionListClient({
               fontFamily: 'inherit',
             },
             components: {
-              Select: { controlHeight: 42 },
-              DatePicker: { controlHeight: 42 },
+              Select: { controlHeight: 36, fontSize: 13 },
+              DatePicker: { controlHeight: 36, fontSize: 13 },
             }
           }}
         >
-          <div className="flex flex-wrap items-center gap-4 p-4 bg-white/50 border border-slate-100 rounded-3xl shadow-sm backdrop-blur-sm">
+          <div className="flex flex-wrap items-center gap-3 p-3 bg-white/50 border border-slate-100 rounded-2xl shadow-sm backdrop-blur-sm">
             {/* Type Toggle */}
-            <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-xl">
+            <div className="flex items-center gap-1 p-1 bg-slate-100 rounded-lg">
               {typeFilters.map((filter) => (
                 <button
                   key={filter.label}
@@ -196,7 +196,7 @@ export default function TransactionListClient({
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Danh mục:</span>
               <Select
                 placeholder="Tất cả danh mục"
-                className="w-48"
+                className="w-40"
                 value={currentCategory || ''}
                 onChange={(val) => updateParams({ category: val || undefined })}
                 options={[
@@ -212,7 +212,7 @@ export default function TransactionListClient({
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Khoảng thời gian:</span>
               <RangePicker
-                className="w-64"
+                className="w-56"
                 placeholder={['Từ ngày', 'Đến ngày']}
                 format="DD/MM/YYYY"
                 value={currentStartDate && currentEndDate ? [dayjs(currentStartDate), dayjs(currentEndDate)] : undefined}

@@ -59,21 +59,21 @@ export default async function Home({ searchParams }: PageProps) {
             <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
             <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-muted-foreground">Live Dashboard</span>
           </div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
             {greeting}, <span className="text-aura-indigo">{user.fullName || 'Admin'}</span>
           </h1>
-          <p className="text-muted-foreground text-sm mt-1">Dưới đây là tóm lược tình hình tài chính của bạn.</p>
+          <p className="text-muted-foreground text-[13px] mt-1">Dưới đây là tóm lược tình hình tài chính của bạn.</p>
         </div>
         
         <div className="flex items-center gap-2 sm:gap-3 w-full md:w-auto mt-4 md:mt-0">
           <div className="hidden lg:flex items-center gap-2 bg-white border border-border px-3 py-2 rounded-xl text-sm font-medium text-muted-foreground shrink-0">
-            <Calendar className="w-4 h-4" />
+            <Calendar className="w-5 h-5" />
             <span>{dayjs().format('DD [Th] MM, YYYY')}</span>
           </div>
           
           <DashboardSearch />
           
-          <button className="p-2.5 bg-white border border-border rounded-xl text-muted-foreground hover:text-foreground hover:border-aura-indigo transition-all relative shrink-0">
+          <button className="p-2 bg-white border border-border rounded-xl text-muted-foreground hover:text-foreground hover:border-aura-indigo transition-all relative shrink-0">
             <Bell className="w-5 h-5" />
             <span className="absolute top-2.5 right-2.5 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
           </button>
