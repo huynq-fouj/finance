@@ -3,23 +3,46 @@
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
+import bcrypt from 'bcryptjs'
+import { cookies } from 'next/headers'
+import { signToken } from '@/utils/auth'
 
 export async function signIn(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
   const supabase = await createClient()
 
-  const { error } = await supabase.auth.signInWithPassword({
-    email,
-    password,
-  })
+  // Find user in public.users
+  const { data: user, error } = await supabase
+    .from('users')
+    .select('*')
+    .eq('email', email)
+    .single()
 
-  if (error) {
-    return redirect(`/login?message=${encodeURIComponent(error.message)}`)
+  if (error || !user) {
+    return redirect(`/login?message=${encodeURIComponent('Invalid login credentials')}`)
   }
 
+  // Verify password
+  const isValid = await bcrypt.compare(password, user.password_hash)
+  if (!isValid) {
+    return redirect(`/login?message=${encodeURIComponent('Invalid login credentials')}`)
+  }
+
+  // Create token
+  const token = await signToken({ userId: user.id, email: user.email })
+  
+  // Set cookie
+  const cookieStore = await cookies()
+  cookieStore.set('auth_token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 7 // 1 week
+  })
+
   revalidatePath('/', 'layout')
-  redirect('/account')
+  redirect('/')
 }
 
 export async function signUp(formData: FormData) {
@@ -27,27 +50,40 @@ export async function signUp(formData: FormData) {
   const password = formData.get('password') as string
   const supabase = await createClient()
 
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/auth/callback`,
-    },
-  })
+  // Hash password
+  const salt = await bcrypt.genSalt(10)
+  const passwordHash = await bcrypt.hash(password, salt)
+
+  // Insert user
+  const { data: user, error } = await supabase
+    .from('users')
+    .insert([{ email, password_hash: passwordHash }])
+    .select()
+    .single()
 
   if (error) {
     return redirect(`/signup?message=${encodeURIComponent(error.message)}`)
   }
 
-  // If email confirmation is disabled in Supabase, the user is logged in.
-  // Otherwise, they need to check their email.
+  // Create token
+  const token = await signToken({ userId: user.id, email: user.email })
+  
+  // Set cookie
+  const cookieStore = await cookies()
+  cookieStore.set('auth_token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    maxAge: 60 * 60 * 24 * 7 // 1 week
+  })
+
   revalidatePath('/', 'layout')
-  redirect('/account')
+  redirect('/')
 }
 
 export async function signOut() {
-  const supabase = await createClient()
-  await supabase.auth.signOut()
+  const cookieStore = await cookies()
+  cookieStore.delete('auth_token')
   revalidatePath('/', 'layout')
   redirect('/login')
 }

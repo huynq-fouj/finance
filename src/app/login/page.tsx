@@ -1,6 +1,6 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { signIn } from '@/app/auth/actions'
-import { Shield, ArrowLeft } from 'lucide-react'
 
 export default async function LoginPage(props: { searchParams: Promise<{ message: string }> }) {
   const searchParams = await props.searchParams
@@ -16,8 +16,8 @@ export default async function LoginPage(props: { searchParams: Promise<{ message
 
         <div className="bento-card p-8 md:p-10 border border-border bg-white shadow-2xl shadow-black/[0.02]">
           <div className="flex flex-col items-center mb-8">
-            <div className="w-12 h-12 bg-primary rounded-2xl flex items-center justify-center mb-4 shadow-lg shadow-primary/20">
-              <Shield className="w-6 h-6 text-white" />
+            <div className="w-16 h-16 rounded-2xl overflow-hidden relative mb-4 shadow-lg shadow-primary/20">
+              <Image src="/logo.png" alt="Aura Logo" fill className="object-cover" />
             </div>
             <h1 className="text-2xl font-bold tracking-tight text-foreground">Chào mừng trở lại</h1>
             <p className="text-muted-foreground text-sm mt-2 text-center">

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { 
   LayoutDashboard, 
@@ -9,7 +10,6 @@ import {
   PieChart, 
   Settings, 
   User,
-  Shield,
   LogOut
 } from 'lucide-react';
 
@@ -31,8 +31,8 @@ const Sidebar = () => {
     <aside className="w-64 border-r border-border h-screen flex flex-col bg-card sticky top-0">
       <div className="p-6 mb-4">
         <Link href="/" className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-primary rounded-xl flex items-center justify-center shadow-lg shadow-primary/20">
-            <Shield className="w-5 h-5 text-white" />
+          <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-primary/20 relative">
+            <Image src="/logo.png" alt="Aura Logo" fill className="object-cover" />
           </div>
           <span className="font-bold text-xl tracking-tight">Aura</span>
         </Link>
