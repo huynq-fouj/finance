@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="vi" className="h-full">
-      <body className={`${inter.className} min-h-full flex bg-background`}>
+      <body className={`${inter.className} h-screen flex flex-col md:flex-row bg-background overflow-hidden`}>
         <Toaster position="top-center" />
         <Sidebar />
         <main className="flex-1 flex flex-col min-w-0 overflow-auto">
