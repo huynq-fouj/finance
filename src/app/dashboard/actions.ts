@@ -4,51 +4,81 @@ import { createAdminClient } from '@/utils/supabase/admin';
 import dayjs from 'dayjs';
 import { getUser } from '../auth/actions';
 
-export async function getDashboardData(range: 'recent' | 'month' = 'recent') {
+export async function getDashboardData(
+  range: 'recent' | 'month' = 'recent',
+  period: 'this_month' | 'this_week' | 'last_week' | 'last_month' | 'this_year' = 'this_month'
+) {
   const user = await getUser();
   if (!user) return null;
 
   const supabase = createAdminClient();
 
-  // Fetch transactions
-  let query = supabase
+  // Fetch ALL transactions for balance and global stats
+  const { data: allTransactions, error: allErr } = await supabase
     .from('transactions')
     .select('*')
-    .eq('user_id', user.id);
+    .eq('user_id', user.id)
+    .order('transaction_date', { ascending: false });
 
-  if (range === 'month') {
-    const startOfMonth = dayjs().startOf('month').toISOString();
-    const endOfMonth = dayjs().endOf('month').toISOString();
-    query = query.gte('transaction_date', startOfMonth).lte('transaction_date', endOfMonth);
-  }
-
-  const { data: transactions, error } = await query.order('transaction_date', { ascending: false });
-
-  if (error || !transactions) {
-    console.error('Error fetching transactions:', error);
+  if (allErr || !allTransactions) {
+    console.error('Error fetching transactions:', allErr);
     return null;
   }
 
-  // Basic Stats (Still based on all time or filtered? Let's keep all time for the top stats)
-  const { data: allTransactions } = await supabase
-    .from('transactions')
-    .select('*')
-    .eq('user_id', user.id);
-  
-  const totalIncome = (allTransactions || [])
+  // Calculate Balance (All time)
+  const totalIncomeAll = allTransactions
+    .filter(tx => tx.type === 'income')
+    .reduce((sum, tx) => sum + Number(tx.amount), 0);
+  const totalExpenseAll = allTransactions
+    .filter(tx => tx.type === 'expense')
+    .reduce((sum, tx) => sum + Number(tx.amount), 0);
+  const balance = totalIncomeAll - totalExpenseAll;
+
+  // Calculate Period-based Stats
+  let startDate = dayjs().startOf('month');
+  let endDate = dayjs().endOf('month');
+
+  if (period === 'this_week') {
+    startDate = dayjs().startOf('week');
+    endDate = dayjs().endOf('week');
+  } else if (period === 'last_week') {
+    startDate = dayjs().subtract(1, 'week').startOf('week');
+    endDate = dayjs().subtract(1, 'week').endOf('week');
+  } else if (period === 'last_month') {
+    startDate = dayjs().subtract(1, 'month').startOf('month');
+    endDate = dayjs().subtract(1, 'month').endOf('month');
+  } else if (period === 'this_year') {
+    startDate = dayjs().startOf('year');
+    endDate = dayjs().endOf('year');
+  }
+
+  const periodTransactions = allTransactions.filter(tx => {
+    const txDate = dayjs(tx.transaction_date);
+    return txDate.isAfter(startDate.subtract(1, 'ms')) && txDate.isBefore(endDate.add(1, 'ms'));
+  });
+
+  const totalIncome = periodTransactions
     .filter(tx => tx.type === 'income')
     .reduce((sum, tx) => sum + Number(tx.amount), 0);
     
-  const totalExpense = (allTransactions || [])
+  const totalExpense = periodTransactions
     .filter(tx => tx.type === 'expense')
     .reduce((sum, tx) => sum + Number(tx.amount), 0);
     
-  const balance = totalIncome - totalExpense;
   const savings = totalIncome > 0 ? ((totalIncome - totalExpense) / totalIncome) * 100 : 0;
 
-  // Chart Data
-  let chartData: any[] = [];
+  // Chart Data logic (Keep as is but using range)
+  let transactionsForChart = allTransactions;
+  if (range === 'month') {
+    const startOfMonth = dayjs().startOf('month');
+    const endOfMonth = dayjs().endOf('month');
+    transactionsForChart = allTransactions.filter(tx => {
+      const txDate = dayjs(tx.transaction_date);
+      return txDate.isAfter(startOfMonth.subtract(1, 'ms')) && txDate.isBefore(endOfMonth.add(1, 'ms'));
+    });
+  }
 
+  let chartData: any[] = [];
   if (range === 'recent') {
     chartData = Array.from({ length: 6 }, (_, i) => {
       const d = dayjs().subtract(i, 'month');
@@ -60,7 +90,7 @@ export async function getDashboardData(range: 'recent' | 'month' = 'recent') {
       };
     }).reverse();
 
-    transactions.forEach(tx => {
+    allTransactions.forEach(tx => {
       const txMonth = dayjs(tx.transaction_date).format('YYYY-MM');
       const monthData = chartData.find(m => m.month === txMonth);
       if (monthData) {
@@ -69,7 +99,6 @@ export async function getDashboardData(range: 'recent' | 'month' = 'recent') {
       }
     });
   } else {
-    // Current month daily data
     const daysInMonth = dayjs().daysInMonth();
     chartData = Array.from({ length: daysInMonth }, (_, i) => {
       const d = dayjs().date(i + 1);
@@ -81,7 +110,7 @@ export async function getDashboardData(range: 'recent' | 'month' = 'recent') {
       };
     });
 
-    transactions.forEach(tx => {
+    transactionsForChart.forEach(tx => {
       const txDate = dayjs(tx.transaction_date).format('YYYY-MM-DD');
       const dayData = chartData.find(d => d.date === txDate);
       if (dayData) {
@@ -103,7 +132,7 @@ export async function getDashboardData(range: 'recent' | 'month' = 'recent') {
       totalExpense,
       savings: Math.max(0, Math.round(savings))
     },
-    recentTransactions: (allTransactions || []).slice(0, 5),
+    recentTransactions: allTransactions.slice(0, 5),
     chartData,
   };
 }

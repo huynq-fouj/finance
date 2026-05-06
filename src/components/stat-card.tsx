@@ -7,19 +7,27 @@ interface StatCardProps {
   change?: string;
   trend?: 'up' | 'down';
   icon: LucideIcon;
+  variant?: 'indigo' | 'emerald' | 'rose' | 'amber';
 }
 
-const StatCard: React.FC<StatCardProps> = ({ title, value, change, trend, icon: Icon }) => {
+const StatCard: React.FC<StatCardProps> = ({ title, value, change, trend, icon: Icon, variant = 'indigo' }) => {
   const isUp = trend === 'up';
   
   const formattedValue = typeof value === 'number' 
     ? new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(value)
     : value;
 
+  const variants = {
+    indigo: 'bg-indigo-50 text-indigo-600',
+    emerald: 'bg-emerald-50 text-emerald-600',
+    rose: 'bg-rose-50 text-rose-600',
+    amber: 'bg-amber-50 text-amber-600',
+  };
+
   return (
     <div className="bento-card group">
       <div className="flex justify-between items-start mb-4">
-        <div className="p-1.5 rounded-lg bg-secondary group-hover:bg-primary group-hover:text-white transition-colors duration-300">
+        <div className={`p-1.5 rounded-lg ${variants[variant]} transition-colors duration-300`}>
           <Icon className="w-4.5 h-4.5" />
         </div>
         {change && (

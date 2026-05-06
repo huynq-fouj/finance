@@ -15,16 +15,20 @@ import {
   Calendar
 } from 'lucide-react';
 
+import DashboardPeriodSelector from '@/components/dashboard-period-selector';
+
 interface PageProps {
   searchParams: Promise<{
     range?: string;
+    period?: string;
   }>;
 }
 
 export default async function Home({ searchParams }: PageProps) {
   const params = await searchParams;
   const range = (params.range as 'recent' | 'month') || 'recent';
-  const data = await getDashboardData(range);
+  const period = (params.period as any) || 'this_month';
+  const data = await getDashboardData(range, period);
 
   if (!data) {
     return <div className="p-8 text-center">Đang tải dữ liệu hoặc lỗi xác thực...</div>;
@@ -40,11 +44,11 @@ export default async function Home({ searchParams }: PageProps) {
       evening: ['Chào buổi tối', 'Chúc bạn tối ấm áp', 'Tận hưởng buổi tối yên bình', 'Buổi tối tuyệt vời'],
     };
 
-    let period: keyof typeof greetings = 'morning';
-    if (hour >= 12 && hour < 18) period = 'afternoon';
-    else if (hour >= 18 || hour < 5) period = 'evening';
+    let periodDay: keyof typeof greetings = 'morning';
+    if (hour >= 12 && hour < 18) periodDay = 'afternoon';
+    else if (hour >= 18 || hour < 5) periodDay = 'evening';
 
-    const choices = greetings[period];
+    const choices = greetings[periodDay];
     return choices[Math.floor(Math.random() * choices.length)];
   };
 
@@ -85,29 +89,42 @@ export default async function Home({ searchParams }: PageProps) {
       {/* Bento Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 auto-rows-min">
         
+        {/* Section Header */}
+        <div className="lg:col-span-4 flex items-center justify-between">
+          <div>
+            <h2 className="text-lg font-bold text-slate-900">Tổng quan tài chính</h2>
+            <p className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Thống kê theo thời gian</p>
+          </div>
+          <DashboardPeriodSelector />
+        </div>
+
         {/* KPI Row */}
         <StatCard 
           title="Tổng số dư" 
           value={stats.balance} 
           icon={Wallet} 
+          variant="indigo"
         />
         <StatCard 
           title="Thu nhập" 
           value={stats.totalIncome} 
           trend="up" 
           icon={ArrowUpRight} 
+          variant="emerald"
         />
         <StatCard 
           title="Chi tiêu" 
           value={stats.totalExpense} 
           trend="down" 
           icon={ArrowDownLeft} 
+          variant="rose"
         />
         <StatCard 
           title="Tỷ lệ tiết kiệm" 
           value={`${stats.savings}%`} 
           trend="up" 
           icon={TrendingUp} 
+          variant="amber"
         />
 
         {/* Main Content Bento Area */}
@@ -142,7 +159,7 @@ export default async function Home({ searchParams }: PageProps) {
       </div>
 
       {/* Footer minimal info */}
-      <footer className="mt-12 pt-8 border-t border-border flex justify-between items-center text-[10px] text-muted-foreground font-medium uppercase tracking-[0.2em]">
+      <footer className="mt-12 pt-8 border-t border-border flex flex-col sm:flex-row gap-2 justify-between items-center text-[10px] text-muted-foreground font-medium uppercase tracking-[0.2em]">
         <div>Aura Finance v2.0.4</div>
         <div className="flex gap-6">
           <a href="#" className="hover:text-foreground transition-colors">Privacy</a>
