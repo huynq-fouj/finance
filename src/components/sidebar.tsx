@@ -43,7 +43,7 @@ const Sidebar = () => {
       <aside className="hidden md:flex inset-y-0 left-0 z-50 w-64 bg-card border-r border-border flex-col">
         <div className="p-6 mb-4 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl overflow-hidden shadow-lg shadow-primary/20 relative">
+            <div className="w-10 h-10 overflow-hidden relative">
               <Image src="/logo.png" alt="Aura Logo" fill className="object-cover" />
             </div>
             <span className="font-bold text-lg tracking-tight">Aura</span>
