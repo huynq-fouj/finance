@@ -1,6 +1,6 @@
 export default function AccountLoading() {
   return (
-    <div className="min-h-screen bg-[#fdfdfe] p-4 lg:p-8 relative overflow-hidden flex flex-col">
+    <div className="min-h-screen bg-[#fdfdfe] p-4 lg:p-8 relative overflow-x-hidden flex flex-col">
       {/* Background decoration */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-[0.03]">
         <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] bg-aura-violet rounded-full blur-[120px]" />

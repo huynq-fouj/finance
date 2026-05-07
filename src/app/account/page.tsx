@@ -36,7 +36,7 @@ export default async function AccountPage(props: { searchParams: Promise<{ error
   }
 
   return (
-    <div className="min-h-screen bg-[#fdfdfe] p-4 lg:p-8 relative overflow-hidden flex flex-col">
+    <div className="min-h-screen bg-[#fdfdfe] p-4 lg:p-8 relative overflow-x-hidden flex flex-col">
       <ErrorToast message={searchParams?.error} type="error" />
       <ErrorToast message={searchParams?.success} type="success" />
       
@@ -212,13 +212,6 @@ export default async function AccountPage(props: { searchParams: Promise<{ error
               <AccountDangerActions />
             </div>
           </div>
-          
-        </div>
-
-        <div className="w-full text-center mt-10 mb-6">
-          <Link href="/" className="inline-flex items-center justify-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
-            &larr; Quay lại Bảng điều khiển
-          </Link>
         </div>
       </div>
     </div>
