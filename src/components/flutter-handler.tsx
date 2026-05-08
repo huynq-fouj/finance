@@ -52,11 +52,11 @@ export default function FlutterHandler() {
       // Router cấp 2+ (e.g., /account/security) -> Về router cấp 1
       if (pathSegments.length >= 2) {
         const parentPath = '/' + pathSegments.slice(0, -1).join('/');
-        router.push(parentPath);
+        router.replace(parentPath);
       } 
       // Router cấp 1 (e.g., /transactions, /account) -> Về trang chủ
       else {
-        router.push('/');
+        router.replace('/');
       }
     };
 
