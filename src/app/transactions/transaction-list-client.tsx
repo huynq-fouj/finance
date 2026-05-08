@@ -232,21 +232,24 @@ export default function TransactionListClient({
 
             {/* Date Range Filter */}
             <div className="w-full md:w-auto flex items-center gap-2">
-              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Khoảng thời gian:</span>
-              <RangePicker
-                className="w-56"
-                placeholder={['Từ ngày', 'Đến ngày']}
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Từ:</span>
+              <DatePicker
+                className="w-32 md:w-36"
+                placeholder="Ngày bắt đầu"
                 format="DD/MM/YYYY"
-                value={currentStartDate && currentEndDate ? [dayjs(currentStartDate), dayjs(currentEndDate)] : undefined}
-                onChange={(dates) => {
-                  if (dates) {
-                    updateParams({
-                      startDate: dates[0]?.toISOString(),
-                      endDate: dates[1]?.toISOString(),
-                    });
-                  } else {
-                    updateParams({ startDate: undefined, endDate: undefined });
-                  }
+                value={currentStartDate ? dayjs(currentStartDate) : undefined}
+                onChange={(date) => {
+                  updateParams({ startDate: date ? date.format('YYYY-MM-DD') : undefined });
+                }}
+              />
+              <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">đến</span>
+              <DatePicker
+                className="w-32 md:w-36"
+                placeholder="Ngày kết thúc"
+                format="DD/MM/YYYY"
+                value={currentEndDate ? dayjs(currentEndDate) : undefined}
+                onChange={(date) => {
+                  updateParams({ endDate: date ? date.format('YYYY-MM-DD') : undefined });
                 }}
               />
             </div>
