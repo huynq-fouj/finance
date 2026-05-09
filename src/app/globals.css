@@ -200,11 +200,14 @@
   }
   
   .transaction-modal .ant-modal-header {
-    position: sticky !important;
+    position: fixed !important;
     top: 0 !important;
-    padding: 0 20px !important;
-    padding-top: calc(env(safe-area-inset-top, 20px) + 12px) !important;
-    padding-bottom: 16px !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    padding: 0 16px !important;
+    padding-top: 32px !important;
+    padding-bottom: 24px !important;
     margin-bottom: 0 !important;
     border-bottom: 1px solid var(--border) !important;
     background: white !important;
@@ -221,6 +224,7 @@
     display: flex;
     flex-direction: column;
     padding: 0 !important;
+    padding-top: calc(env(safe-area-inset-top, 20px) + 80px) !important;
     overflow: hidden; /* We handle scrolling inside the form in TSX */
   }
   

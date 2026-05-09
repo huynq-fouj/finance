@@ -201,7 +201,7 @@ export default function AddTransactionModal() {
             <button onClick={() => !isPending && setIsOpen(false)} className="md:hidden p-1 -ml-1 text-foreground transition-colors shrink-0 border-none bg-transparent cursor-pointer flex items-center justify-center">
               <ChevronLeft size={28} strokeWidth={2.5} />
             </button>
-            <span className="text-xl font-bold tracking-tight text-slate-900">Thêm Giao Dịch Mới</span>
+            <span className="text-xl font-bold tracking-tight text-foreground">Thêm giao dịch mới</span>
           </div>
         }
         open={isOpen}
@@ -220,7 +220,7 @@ export default function AddTransactionModal() {
           className="flex flex-col h-full"
           requiredMark={false}
         >
-          <div className="flex-1 overflow-y-auto pt-4 px-5 pb-32 md:pb-0">
+          <div className="flex-1 overflow-y-auto pt-4 px-4 pb-32 md:pb-0">
             <TransactionFormFields />
           </div>
 
@@ -301,7 +301,7 @@ export function EditTransactionModal({
             <button onClick={() => !isPending && onClose()} className="md:hidden p-1 -ml-1 text-foreground transition-colors shrink-0 border-none bg-transparent cursor-pointer flex items-center justify-center">
               <ChevronLeft size={28} strokeWidth={2.5} />
             </button>
-            <span className="text-2xl font-bold tracking-tight text-slate-900">Chỉnh sửa Giao dịch</span>
+            <span className="text-xl font-bold tracking-tight text-foreground">Chỉnh sửa giao dịch</span>
           </div>
         }
         open={open}
@@ -319,7 +319,7 @@ export function EditTransactionModal({
           className="flex flex-col h-full"
           requiredMark={false}
         >
-          <div className="flex-1 overflow-y-auto pt-4 px-5 pb-32 md:pb-0">
+          <div className="flex-1 overflow-y-auto pt-4 px-4 pb-32 md:pb-0">
             <TransactionFormFields />
           </div>
 
