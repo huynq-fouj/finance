@@ -33,61 +33,62 @@ const formatCurrency = (value: number) => {
 
 const ReportSummaryCards: React.FC<Props> = ({ stats }) => {
   return (
-    <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-3 gap-4 md:gap-6 pb-2 md:pb-0">
-      <div className="bento-card min-w-[85vw] md:min-w-0 shrink-0 snap-center bg-linear-to-br from-indigo-50/50 to-white">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-1.5 bg-indigo-50 text-indigo-600 rounded-lg">
-            <TrendingUp className="w-4.5 h-4.5" />
+    <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6">
+      <div className="bento-card bg-linear-to-br from-indigo-50/50 to-white">
+        <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+          <div className="p-1 md:p-1.5 bg-indigo-50 text-indigo-600 rounded-lg">
+            <TrendingUp className="w-4 h-4 md:w-4.5 md:h-4.5" />
           </div>
-          <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Tỷ lệ tiết kiệm</span>
+          <span className="text-[10px] md:text-[11px] font-bold text-muted-foreground uppercase tracking-widest truncate">Tỷ lệ tiết kiệm</span>
         </div>
-        <div className="flex items-end justify-between">
-          <h4 className="text-2xl font-bold tracking-tight text-indigo-900">{stats.savingsRate}%</h4>
-          <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full">
+        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-1 md:gap-2">
+          <h4 className="text-lg md:text-2xl font-bold tracking-tight text-indigo-900 truncate">{stats.savingsRate}%</h4>
+          <span className="text-[10px] font-bold text-indigo-600 bg-indigo-50 px-2 py-0.5 rounded-full w-fit">
             {stats.savingsRate >= 20 ? 'Rất tốt' : 'Cần cải thiện'}
           </span>
         </div>
-        <div className="mt-4 w-full h-1.5 bg-indigo-100 rounded-full overflow-hidden">
+        <div className="mt-3 md:mt-4 w-full h-1.5 bg-indigo-100 rounded-full overflow-hidden">
           <div 
             className="h-full bg-indigo-500 rounded-full transition-all duration-1000" 
             style={{ width: `${Math.min(100, stats.savingsRate)}%` }}
           ></div>
         </div>
+
       </div>
 
-      <div className="bento-card min-w-[85vw] md:min-w-0 shrink-0 snap-center bg-linear-to-br from-rose-50/50 to-white">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-1.5 bg-rose-50 text-rose-600 rounded-lg">
-            <AlertCircle className="w-4.5 h-4.5" />
+      <div className="bento-card bg-linear-to-br from-rose-50/50 to-white">
+        <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+          <div className="p-1 md:p-1.5 bg-rose-50 text-rose-600 rounded-lg">
+            <AlertCircle className="w-4 h-4 md:w-4.5 md:h-4.5" />
           </div>
-          <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Chi tiêu lớn nhất</span>
+          <span className="text-[10px] md:text-[11px] font-bold text-muted-foreground uppercase tracking-widest truncate">Chi tiêu lớn</span>
         </div>
         {stats.largestExpense ? (
           <div>
-            <h4 className="text-xl font-bold tracking-tight text-rose-900">{formatCurrency(stats.largestExpense.amount)}</h4>
-            <p className="text-[10px] text-rose-600 font-bold mt-1 uppercase tracking-wider">
+            <h4 className="text-lg md:text-xl font-bold tracking-tight text-rose-900 truncate">{formatCurrency(stats.largestExpense.amount)}</h4>
+            <p className="text-[10px] text-rose-600 font-bold mt-1 uppercase tracking-wider truncate">
               {stats.largestExpense.category}
             </p>
             {stats.largestExpense.note && (
-              <p className="text-[10px] text-rose-400 italic mt-2 truncate">"{stats.largestExpense.note}"</p>
+              <p className="text-[10px] text-rose-400 italic mt-1 md:mt-2 truncate">"{stats.largestExpense.note}"</p>
             )}
           </div>
         ) : (
-          <p className="text-sm text-muted-foreground italic">Chưa có dữ liệu</p>
+          <p className="text-[11px] md:text-sm text-muted-foreground italic">Chưa có dữ liệu</p>
         )}
       </div>
 
-      <div className="bento-card min-w-[85vw] md:min-w-0 shrink-0 snap-center bg-linear-to-br from-amber-50/50 to-white">
-        <div className="flex items-center gap-3 mb-4">
-          <div className="p-1.5 bg-amber-50 text-amber-600 rounded-lg">
-            <Zap className="w-4.5 h-4.5" />
+      <div className="bento-card col-span-2 md:col-span-1 bg-linear-to-br from-amber-50/50 to-white">
+        <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
+          <div className="p-1 md:p-1.5 bg-amber-50 text-amber-600 rounded-lg">
+            <Zap className="w-4 h-4 md:w-4.5 md:h-4.5" />
           </div>
-          <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest">Chi tiêu trung bình/ngày</span>
+          <span className="text-[10px] md:text-[11px] font-bold text-muted-foreground uppercase tracking-widest truncate">Chi tiêu trung bình/ngày</span>
         </div>
         <div>
-          <h4 className="text-xl font-bold tracking-tight text-amber-900">{formatCurrency(stats.averageDaily)}</h4>
-          <p className="text-[10px] text-amber-600 font-medium mt-1">Dựa trên dữ liệu hiện tại</p>
-          <div className="flex gap-1 mt-3">
+          <h4 className="text-lg md:text-xl font-bold tracking-tight text-amber-900 truncate">{formatCurrency(stats.averageDaily)}</h4>
+          <p className="text-[10px] text-amber-600 font-medium mt-1 truncate">Dựa trên dữ liệu hiện tại</p>
+          <div className="flex gap-1 mt-2 md:mt-3">
             {[1, 2, 3, 4, 5].map(i => (
               <div 
                 key={i} 

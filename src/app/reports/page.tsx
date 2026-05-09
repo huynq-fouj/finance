@@ -51,8 +51,8 @@ export default async function ReportsPage({ searchParams }: PageProps) {
           <p className="text-muted-foreground text-[13px] mt-1">Cái nhìn tổng quan và chi tiết về thói quen chi tiêu của bạn.</p>
         </div>
         
-        <div className="flex items-center gap-3 w-full md:w-auto overflow-hidden">
-          <div className="flex bg-white border border-border p-1 rounded-lg md:rounded-xl shadow-sm overflow-x-auto snap-x">
+        <div className="flex items-center gap-3 w-full md:w-auto min-w-0">
+          <div className="flex bg-white border border-border p-1 rounded-lg md:rounded-xl shadow-sm overflow-x-auto snap-x hide-scrollbar max-w-full w-full sm:w-auto">
             {Object.entries(periodLabels).map(([key, label]) => (
               <Link
                 key={key}
@@ -87,17 +87,17 @@ export default async function ReportsPage({ searchParams }: PageProps) {
           
           <div className="bento-card bg-slate-900 text-white border-none overflow-hidden relative">
             <div className="relative z-10">
-              <div className="flex items-center gap-2 mb-4 opacity-60 text-[10px] font-bold uppercase tracking-widest">
+              <div className="flex items-center gap-2 mb-4 opacity-60 text-[10px] font-bold uppercase tracking-widest text-indigo-500">
                 <Info className="w-4 h-4" />
                 Gợi ý từ Aura AI
               </div>
-              <h4 className="text-lg font-bold mb-2">Tối ưu hóa ngân sách</h4>
-              <p className="text-sm text-slate-300 leading-relaxed">
+              <h4 className="text-lg font-bold mb-2 text-indigo-500">Tối ưu hóa ngân sách</h4>
+              <p className="text-sm text-slate-600 leading-relaxed">
                 Dựa trên báo cáo {periodLabels[period].toLowerCase()}, bạn đang chi tiêu nhiều nhất vào 
                 <span className="text-aura-indigo font-bold"> {categoryData[0]?.name || '...'}</span>. 
                 Hãy thử đặt hạn mức cho danh mục này để tiết kiệm thêm khoảng 15% vào tháng tới.
               </p>
-              <button className="mt-6 px-5 py-2 bg-white/10 hover:bg-white/20 rounded-xl text-xs font-bold transition-all border border-white/10">
+              <button className="mt-6 px-5 py-2 bg-white/10 hover:bg-white/20 border border-indigo-500 rounded-xl text-xs font-bold text-indigo-500 transition-all">
                 Xem chi tiết gợi ý
               </button>
             </div>
