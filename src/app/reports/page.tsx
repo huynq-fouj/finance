@@ -52,12 +52,12 @@ export default async function ReportsPage({ searchParams }: PageProps) {
         </div>
         
         <div className="flex items-center gap-3">
-          <div className="flex bg-white border border-border p-1 rounded-xl shadow-sm">
+          <div className="flex bg-white border border-border p-1 rounded-lg md:rounded-xl shadow-sm">
             {Object.entries(periodLabels).map(([key, label]) => (
               <Link
                 key={key}
                 href={`/reports?period=${key}`}
-                className={`px-4 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                className={`px-4 py-1.5 rounded md:rounded-[12px] text-[10px] md:text-xs text-nowrap font-bold transition-all ${
                   period === key 
                     ? 'bg-slate-900 text-white shadow-md' 
                     : 'text-slate-500 hover:text-slate-900 hover:bg-slate-50'
