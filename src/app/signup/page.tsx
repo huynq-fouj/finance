@@ -3,6 +3,12 @@ import Image from 'next/image'
 import { signUp } from '@/app/auth/actions'
 import ErrorToast from '@/components/error-toast'
 import SubmitButton from '@/components/submit-button'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Đăng ký | Aura Moni',
+  description: 'Tạo tài khoản Aura Moni để bắt đầu hành trình quản lý tài chính thông minh của bạn.',
+}
 
 export default async function SignupPage(props: { searchParams: Promise<{ error?: string, message?: string }> }) {
   const searchParams = await props.searchParams
