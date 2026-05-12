@@ -61,7 +61,7 @@ const antdTheme = {
   },
 };
 
-import { categorySelectOptions } from '@/constants/categories';
+import { CATEGORIES } from '@/constants/categories';
 
 const labelClass = "font-bold text-slate-500 uppercase tracking-widest text-[10px]";
 
@@ -143,7 +143,17 @@ function TransactionFormFields() {
             className="w-full"
             styles={{ popup: { root: { borderRadius: '8px' } } }}
             classNames={{ popup: { root: 'shadow-2xl' } }}
-            options={categorySelectOptions}
+            options={CATEGORIES.map(c => ({
+              value: c.value,
+              label: (
+                <div className="flex items-center gap-2">
+                  <div className={`p-1 rounded-md ${c.className}`}>
+                    <c.icon className="w-4 h-4" />
+                  </div>
+                  <span>{c.label}</span>
+                </div>
+              )
+            }))}
           />
         </Form.Item>
       </div>
