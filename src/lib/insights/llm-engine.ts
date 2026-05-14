@@ -88,8 +88,6 @@ JSON format:
       return null;
     }
 
-    console.log(text)
-
     const parsed = JSON.parse(text);
     const rawInsights = parsed?.insights;
     if (!Array.isArray(rawInsights) || rawInsights.length === 0) {
