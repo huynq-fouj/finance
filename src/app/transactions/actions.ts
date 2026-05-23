@@ -119,6 +119,7 @@ export async function deleteTransaction(id: string) {
   revalidatePath('/transactions')
   updateTag('reports')
   updateTag('dashboard')
+  updateTag('insights')
   return { success: true }
 }
 
@@ -167,6 +168,7 @@ export async function updateTransaction(id: string, data: {
   revalidatePath('/transactions')
   updateTag('reports')
   updateTag('dashboard')
+  updateTag('insights')
   return { success: true }
 }
 
@@ -221,6 +223,7 @@ export async function createTransaction(formData: FormData) {
   revalidatePath('/transactions')
   updateTag('reports')
   updateTag('dashboard')
+  updateTag('insights')
   
   return { success: true }
 }

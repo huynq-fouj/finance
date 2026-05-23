@@ -104,7 +104,7 @@ const ReportSummaryCards: React.FC<Props> = ({ stats, dailyLimit, monthlyLimit }
               {stats.largestExpense.title ? `${stats.largestExpense.category} - ${stats.largestExpense.title}` : stats.largestExpense.category}
             </p>
             {stats.largestExpense.note && (
-              <p className="text-[10px] text-rose-400 italic mt-1 md:mt-2 truncate">"{stats.largestExpense.note}"</p>
+              <p className="text-[10px] text-rose-400 italic mt-1 md:mt-2 truncate">&ldquo;{stats.largestExpense.note}&rdquo;</p>
             )}
           </div>
         ) : (
