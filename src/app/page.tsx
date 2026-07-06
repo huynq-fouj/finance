@@ -20,8 +20,12 @@ import {
   ArrowDownLeft, 
   TrendingUp,
   Bell,
-  Calendar
+  Calendar,
+  BookOpen,
+  PieChart,
+  User
 } from 'lucide-react';
+import Link from 'next/link';
 
 import DashboardPeriodSelector from '@/components/dashboard-period-selector';
 
@@ -98,6 +102,34 @@ export default async function Home({ searchParams }: PageProps) {
           <AddTransactionModal />
         </div>
       </header>
+
+      {/* Mobile Quick Navigation */}
+      <div className="md:hidden grid grid-cols-4 mb-6 px-2">
+        <Link href="/transactions" className="flex flex-col items-center justify-center gap-2 group active:opacity-60 transition-opacity">
+          <div className="size-10 rounded-md bg-white border border-slate-100 flex items-center justify-center text-slate-600">
+            <Wallet className="w-5 h-5" strokeWidth={2} />
+          </div>
+          <span className="text-[10px] font-bold text-slate-500 tracking-wide">Giao dịch</span>
+        </Link>
+        <Link href="/debts" className="flex flex-col items-center justify-center gap-2 group active:opacity-60 transition-opacity">
+          <div className="size-10 rounded-md bg-white border border-slate-100 flex items-center justify-center text-slate-600">
+            <BookOpen className="w-5 h-5" strokeWidth={2} />
+          </div>
+          <span className="text-[10px] font-bold text-slate-500 tracking-wide">Công nợ</span>
+        </Link>
+        <Link href="/reports" className="flex flex-col items-center justify-center gap-2 group active:opacity-60 transition-opacity">
+          <div className="size-10 rounded-md bg-white border border-slate-100 flex items-center justify-center text-slate-600">
+            <PieChart className="w-5 h-5" strokeWidth={2} />
+          </div>
+          <span className="text-[10px] font-bold text-slate-500 tracking-wide">Báo cáo</span>
+        </Link>
+        <Link href="/account" className="flex flex-col items-center justify-center gap-2 group active:opacity-60 transition-opacity">
+          <div className="size-10 rounded-md bg-white border border-slate-100 flex items-center justify-center text-slate-600">
+            <User className="w-5 h-5" strokeWidth={2} />
+          </div>
+          <span className="text-[10px] font-bold text-slate-500 tracking-wide">Tài khoản</span>
+        </Link>
+      </div>
 
       {/* Bento Grid */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 auto-rows-min">

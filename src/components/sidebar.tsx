@@ -14,6 +14,7 @@ import {
   ChevronDown,
   BarChart3,
   CalendarRange,
+  BookOpen,
   type LucideIcon,
 } from 'lucide-react';
 import { signOut } from '@/app/auth/actions';
@@ -35,6 +36,7 @@ const menuItems: MenuItem[] = [
       { icon: CalendarRange, label: 'Chi tiêu theo tháng', href: '/reports/monthly' },
     ],
   },
+  { icon: BookOpen, label: 'Công nợ', href: '/debts' },
   { icon: User, label: 'Tài khoản', href: '/account' },
   { icon: Settings, label: 'Cài đặt', href: '/settings' },
 ];
