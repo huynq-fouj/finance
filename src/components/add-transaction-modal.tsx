@@ -306,14 +306,7 @@ export default function AddTransactionModal({ trigger }: { trigger?: React.React
   );
 
   const formContent = (
-    <Form
-      form={form}
-      layout="vertical"
-      onFinish={handleFinish}
-      initialValues={{ type: 'expense', transactionDate: dayjs() }}
-      className="flex flex-col h-full"
-      requiredMark={false}
-    >
+    <div className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto pt-4 px-4 pb-24 md:pb-0">
         <TransactionFormFields />
       </div>
@@ -322,21 +315,29 @@ export default function AddTransactionModal({ trigger }: { trigger?: React.React
         <Button onClick={() => setIsOpen(false)} disabled={isPending} className="h-10! border-none text-slate-600 transition-all">
           Hủy
         </Button>
-        <Button type="primary" htmlType="submit" loading={isPending} className="h-10! shadow-xl shadow-slate-900/10 border-none min-w-[140px]">
+        <Button type="primary" onClick={() => form.submit()} loading={isPending} className="h-10! shadow-xl shadow-slate-900/10 border-none min-w-[140px]">
           Lưu giao dịch
         </Button>
       </div>
-    </Form>
+    </div>
   );
 
   return (
     <ConfigProvider theme={antdTheme}>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleFinish}
+        initialValues={{ type: 'expense', transactionDate: dayjs() }}
+        requiredMark={false}
+      >
       {trigger ? (
         <div onClick={() => setIsOpen(true)} className="cursor-pointer">
           {trigger}
         </div>
       ) : (
         <button
+          type="button"
           onClick={() => setIsOpen(true)}
           className="bg-primary text-white px-3 py-2 rounded-xl text-[12px] font-bold hover:bg-primary/90 transition-all shadow-xl shadow-primary/10 flex items-center justify-center gap-2 active:scale-95 shrink-0 border-none outline-none cursor-pointer"
         >
@@ -387,6 +388,7 @@ export default function AddTransactionModal({ trigger }: { trigger?: React.React
           {formContent}
         </Modal>
       )}
+      </Form>
     </ConfigProvider>
   );
 }
@@ -491,13 +493,7 @@ export function EditTransactionModal({
   );
 
   const formContent = (
-    <Form
-      form={form}
-      layout="vertical"
-      onFinish={handleFinish}
-      className="flex flex-col h-full"
-      requiredMark={false}
-    >
+    <div className="flex flex-col h-full">
       <div className="flex-1 overflow-y-auto pt-4 px-4 pb-24 md:pb-0">
         <TransactionFormFields />
       </div>
@@ -506,15 +502,21 @@ export function EditTransactionModal({
         <Button size="large" onClick={onClose} disabled={isPending} className="h-10! border-none text-slate-600 transition-all">
           Hủy
         </Button>
-        <Button type="primary" htmlType="submit" size="large" loading={isPending} className="h-10! shadow-xl shadow-slate-900/10 border-none min-w-[140px]">
+        <Button type="primary" onClick={() => form.submit()} size="large" loading={isPending} className="h-10! shadow-xl shadow-slate-900/10 border-none min-w-[140px]">
           Lưu thay đổi
         </Button>
       </div>
-    </Form>
+    </div>
   );
 
   return (
     <ConfigProvider theme={antdTheme}>
+      <Form
+        form={form}
+        layout="vertical"
+        onFinish={handleFinish}
+        requiredMark={false}
+      >
       {isMobile ? (
         <Drawer
           title={headerContent}
@@ -557,6 +559,7 @@ export function EditTransactionModal({
           {formContent}
         </Modal>
       )}
+      </Form>
     </ConfigProvider>
   );
 }
